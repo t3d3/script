@@ -176,3 +176,32 @@ alias pbpaste='xclip -selection clipboard -o'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date "+%a, %d %b %H:%M:%S" && time cat && date "+%a, %d %b %H:%M:%S"'
 alias tldr='tldr -t base16'
 
+#Man en couleur
+
+man() {
+     env \
+     LESS_TERMCAP_mb=$'\E[01;31m' \
+     LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+     LESS_TERMCAP_me=$'\E[0m' \
+     LESS_TERMCAP_se=$'\E[0m' \
+     LESS_TERMCAP_so=$'\E[1;44;33m' \
+     LESS_TERMCAP_ue=$'\E[0m' \
+     LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+     man "$@"
+}
+
+#42 Norminette
+
+check()
+{
+	norminette -R CheckForbiddenSourceHeader
+	echo "\nFILES:"
+	ls -a */*
+	echo "\nHIDDEN FILES:"
+	ls -a */.*
+	echo "\nWRONG FILES:"
+	grep -lRE "Stdio|printf|main" *
+	gcc -Wall -Wextra -Werror -c */*
+	rm *.o
+}
+
